@@ -1,0 +1,49 @@
+!@encoding CP1254
+model ModelName
+uses "mmxprs"; !gain access to the Xpress-Optimizer solver
+
+
+
+
+!sample declarations section
+declarations
+	CityX=1..5
+	CityY=1..5
+	n=5
+	Cost_Roads:array (CityX,CityY) of real
+	C: array(CityX,CityY) of real
+	
+	U:array (CityX) of mpvar
+	X:array(CityX,CityY) of mpvar
+! ...
+  Objective:linctr
+end-declarations
+
+C::[0,12,88,46,12,
+12,0,28,10,58,
+88,28,0,94,54,
+46,10,94,0,36,
+12,58,54,36,0]
+
+
+forall(i in CityX) OneVisitI(i):= sum(j in CityY | i<>j) X(i,j) = 1
+forall(j in CityY) OneVisitJ(j):= sum(i in CityY | i<>j) X(i,j) = 1
+forall(i,j in CityX | i<>j) X(i,j) is_binary
+forall(j in CityX)
+U(j)>=0
+U(1) = 0
+forall(i in CityX, j in CityY | j>1)
+U(j)>=U(i)+1-n*(1-X(i,j))
+
+
+
+MinValue:=sum(i in CityX,j in CityY) C(i,j)*X(i,j)
+minimize(MinValue)
+
+writeln("Solution:\n Objective: ", getobjval)
+forall(i in CityX ,j in CityX) do
+	if(getsol(X(i,j)) > 0) then
+ writeln(" X(",i,",",j,"): ", getsol(X(i,j)))
+ 	end-if
+end-do
+end-model
