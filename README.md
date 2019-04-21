@@ -14,7 +14,7 @@ Arif Can Terzioğlu-21302061
 
 Euclidian and Non-Euclidian samples have been generated on Matlab.  
 
-Symmetric and Non-symmetric samples have been produced on C# environment. Nearest neighbor algorithm has been also implemented on C# environment. 
+Symmetric and Non-symmetric samples have been produced on C#. Nearest neighbor algorithm has been also implemented on C# environment. 
 
 Inputs:
 
